@@ -1,0 +1,25 @@
+sudo: required
+services:
+   - docker
+
+
+before_install:
+   - docker build -t surendra/docker-react -f Dockerfile.dev .
+
+script:
+   - docker run surendra/docker-react npm run test -- --coverage
+
+deploy:
+  provider: elasticbeantalk
+  region: "We can get this from AWS COnsole"
+  app: "docker-react"
+  env: "Docker-env"
+  bucket_name: "from AWS console S3 we can get it"
+  bucket_path: "docker-react"
+  on:
+    branch: master
+  access_key_id: $AWS_ACCESS_KEY
+  secret_access_key:
+    secure: "$AWS_SECRET_KEY"
+
+
